@@ -11,7 +11,7 @@ GEM
     mustermann (3.1.1)
     pg (1.6.3)
     pg (1.6.3-x64-mingw-ucrt)
-    rack (3.2.6)
+    rack (3.2.7)
     rack-protection (4.2.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
