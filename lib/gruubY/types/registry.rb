@@ -3,7 +3,7 @@ require_relative "base_object"
 module GrubY
   module TypeRegistry
     TYPE_NAMES = %w[
-      AcceptedGiftTypes Birthday BusinessConnection BusinessIntro BusinessRecipients BusinessWeeklyOpen BusinessWorkingHours
+      Update AcceptedGiftTypes Birthday BusinessConnection BusinessIntro BusinessRecipients BusinessWeeklyOpen BusinessWorkingHours
       Username VerificationStatus ChatPhoto ChatMember ChatPermissions ChatAdministratorRights ChatInviteLink ChatAdminWithInviteLinks
       ChatEvent ChatEventFilter ChatMemberUpdated ChatJoiner Dialog Restriction EmojiStatus FailedToAddMember Folder GroupCallMember
       ChatColor FoundContacts PrivacyRule StoriesStealthMode UserRating BotVerification BusinessBotRights ChatSettings
@@ -49,7 +49,9 @@ module GrubY
       InputPrivacyRuleAllowPremium InputPrivacyRuleAllowUsers InputPrivacyRuleDisallowAll InputPrivacyRuleDisallowBots
       InputPrivacyRuleDisallowChats InputPrivacyRuleDisallowContacts InputPrivacyRuleDisallowUsers InputTextMessageContent
       InputVenueMessageContent
-      BotFullInfo Widget SharedWidget WidgetQuery SharedWidgetQuery
+      BotFullInfo Sticker StickerSet MaskPosition InputSticker
+      ChatBoostRemoved PollAnswer Update WebhookInfo BotSubscriptionUpdated MessageGenerationStopped
+      Widget SharedWidget WidgetQuery SharedWidgetQuery
       WidgetQueryType WidgetQueryTypeData WidgetQueryTypeSignData WidgetQueryTypeSentTransaction WidgetWallet
       EphemeralMessageParameters CommunityChatJoined Community
       ChatShareTheme ChatShareThemeEmoji ChatShareThemeUniqueGift
