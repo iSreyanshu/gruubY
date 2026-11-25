@@ -49,12 +49,6 @@
 <li class="toctree-l1"><a class="reference internal" href="#botapi-quick-start">BotAPI Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tdlib-quick-start">TDLib Quick Start</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#tdlib-paths">TDLib Paths</a></li>
-<li class="toctree-l1"><a class="reference internal" href="#ntgcalls-native">NTgCalls Native</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#environment">Environment</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#run-demo">Run Demo</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#direct-ruby-usage">Direct Ruby Usage</a></li>
-</ul>
-</li>
 <li class="toctree-l1"><a class="reference internal" href="#telegram-user-session-string-ruby">Telegram User Session String (Ruby)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#framework-helpers">Framework Helpers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="#enumerations">Enumerations</a></li>
@@ -178,54 +172,6 @@ gem<span class="w"> </span>install<span class="w"> </span>./gruubY-0.2.2.gem
 <li><p><code class="docutils literal notranslate"><span class="pre">tdjson_path:</span></code> constructor argument</p></li>
 </ul>
 </section>
-<section id="ntgcalls-native">
-<h1>NTgCalls Native<a class="headerlink" href="#ntgcalls-native" title="Link to this heading"></a></h1>
-<p>GrubY uses direct Ruby and C bindings for <code class="docutils literal notranslate"><span class="pre">ntgcalls</span></code>.</p>
-<p>example:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">example/ntgcalls.rb</span></code></p></li>
-</ul>
-<section id="environment">
-<h2>Environment<a class="headerlink" href="#environment" title="Link to this heading"></a></h2>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">TD_USER_SESSION</span></code> (required; generated via <code class="docutils literal notranslate"><span class="pre">example/generate_user_session.rb</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">NTGCALLS_PATH</span></code> (optional; absolute/custom path to shared library)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VC_CHAT</span></code> (required; numeric chat id or <code class="docutils literal notranslate"><span class="pre">&#64;username</span></code>)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VC_AUDIO</span></code> (required; local file path or URL)</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">VC_INVITE_HASH</span></code> (optional; invite hash for restricted voice chats)</p></li>
-</ul>
-</section>
-<section id="run-demo">
-<h2>Run Demo<a class="headerlink" href="#run-demo" title="Link to this heading"></a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ruby<span class="w"> </span>example/ntgcalls.rb
-</pre></div>
-</div>
-</section>
-<section id="direct-ruby-usage">
-<h2>Direct Ruby Usage<a class="headerlink" href="#direct-ruby-usage" title="Link to this heading"></a></h2>
-<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">bot</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GrubY</span><span class="o">::</span><span class="no">NTgCalls</span><span class="o">::</span><span class="no">MusicBot</span><span class="o">.</span><span class="n">new</span><span class="p">(</span>
-<span class="w">  </span><span class="ss">td_user_session</span><span class="p">:</span><span class="w"> </span><span class="no">ENV</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="s2">"TD_USER_SESSION"</span><span class="p">),</span>
-<span class="w">  </span><span class="ss">tdjson_path</span><span class="p">:</span><span class="w"> </span><span class="no">ENV</span><span class="o">[</span><span class="s2">"TDJSON_PATH"</span><span class="o">]</span><span class="p">,</span>
-<span class="w">  </span><span class="ss">ntgcalls_path</span><span class="p">:</span><span class="w"> </span><span class="no">ENV</span><span class="o">[</span><span class="s2">"NTGCALLS_PATH"</span><span class="o">]</span>
-<span class="p">)</span>
-
-<span class="n">bot</span><span class="o">.</span><span class="n">start</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">join_and_play</span><span class="p">(</span><span class="ss">chat</span><span class="p">:</span><span class="w"> </span><span class="s2">"@GrubYChat"</span><span class="p">,</span><span class="w"> </span><span class="ss">audio</span><span class="p">:</span><span class="w"> </span><span class="s2">"song.mp3"</span><span class="p">)</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">pause</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">resume</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">mute</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">unmute</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">stop_call</span>
-<span class="n">bot</span><span class="o">.</span><span class="n">stop</span>
-</pre></div>
-</div>
-<p>Note:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">ntgcalls</span></code> is a media engine.</p></li>
-<li><p>This demo performs signaling/auth through TDLib raw calls plus NTgCalls media engine.</p></li>
-</ul>
-</section>
-</section>
 <section id="telegram-user-session-string-ruby">
 <h1>Telegram User Session String (Ruby)<a class="headerlink" href="#telegram-user-session-string-ruby" title="Link to this heading"></a></h1>
 <p>Generate a reusable TDLib user session string:</p>
@@ -248,7 +194,6 @@ gem<span class="w"> </span>install<span class="w"> </span>./gruubY-0.2.2.gem
 <p>Enums:</p>
 <div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="no">GrubY</span><span class="o">::</span><span class="no">Enums</span><span class="o">::</span><span class="no">ParseMode</span><span class="o">::</span><span class="no">MARKDOWN_V2</span>
 <span class="no">GrubY</span><span class="o">::</span><span class="no">Enums</span><span class="o">::</span><span class="no">ChatAction</span><span class="o">::</span><span class="no">TYPING</span>
-<span class="no">GrubY</span><span class="o">::</span><span class="no">Enums</span><span class="o">::</span><span class="no">GroupCallUpdateType</span><span class="o">::</span><span class="no">UPDATE_GROUP_CALL</span>
 </pre></div>
 </div>
 <p>InlineKeyboard and WebApp:</p>
@@ -363,14 +308,6 @@ gem<span class="w"> </span>install<span class="w"> </span>./gruubY-0.2.2.gem
 <span class="n">client</span><span class="o">.</span><span class="n">on_message</span><span class="p">(</span><span class="n">f</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="o">|</span><span class="n">app</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="o">|</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">reply_text</span><span class="p">(</span><span class="s2">"ok"</span><span class="p">)</span><span class="w"> </span><span class="p">}</span>
 </pre></div>
 </div>
-<p>Raw Group-Call Objects:</p>
-<div class="highlight-ruby notranslate"><div class="highlight"><pre><span></span><span class="n">igc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GrubY</span><span class="o">::</span><span class="no">RawTypes</span><span class="o">.</span><span class="n">input_group_call</span><span class="p">(</span><span class="nb">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="ss">access_hash</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">)</span>
-<span class="n">peer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GrubY</span><span class="o">::</span><span class="no">RawTypes</span><span class="o">.</span><span class="n">input_peer_self</span>
-<span class="n">json</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GrubY</span><span class="o">::</span><span class="no">RawTypes</span><span class="o">.</span><span class="n">to_data_json</span><span class="p">({</span><span class="w"> </span><span class="ss">ufrag</span><span class="p">:</span><span class="w"> </span><span class="s2">"x"</span><span class="w"> </span><span class="p">})</span>
-<span class="n">join</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GrubY</span><span class="o">::</span><span class="no">RawTypes</span><span class="o">.</span><span class="n">join_group_call</span><span class="p">(</span><span class="ss">call</span><span class="p">:</span><span class="w"> </span><span class="n">igc</span><span class="p">,</span><span class="w"> </span><span class="ss">params</span><span class="p">:</span><span class="w"> </span><span class="n">json</span><span class="p">,</span><span class="w"> </span><span class="ss">join_as</span><span class="p">:</span><span class="w"> </span><span class="n">peer</span><span class="p">)</span>
-<span class="n">leave</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="no">GrubY</span><span class="o">::</span><span class="no">RawTypes</span><span class="o">.</span><span class="n">leave_group_call</span><span class="p">(</span><span class="ss">call</span><span class="p">:</span><span class="w"> </span><span class="n">igc</span><span class="p">,</span><span class="w"> </span><span class="ss">source</span><span class="p">:</span><span class="w"> </span><span class="mi">123</span><span class="p">)</span>
-</pre></div>
-</div>
 </section>
 <section id="steps-to-setup-tdjson">
 <h1>Steps to Setup TDJSON:<a class="headerlink" href="#steps-to-setup-tdjson" title="Link to this heading"></a></h1>
@@ -398,7 +335,6 @@ gem<span class="w"> </span>install<span class="w"> </span>./gruubY-0.2.2.gem
 <h1>Examples:<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">example/bot.rb</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">example/ntgcalls.rb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">example/generate_user_session.rb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">example/tdlib.rb</span></code></p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">example/userbot.rb</span></code> (phone/QR login)</p></li>

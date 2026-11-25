@@ -85,51 +85,6 @@ Provide via:
 - `TDJSON_PATH` env var
 - `tdjson_path:` constructor argument
 
-## NTgCalls Native
-
-GrubY uses direct Ruby and C bindings for `ntgcalls`.
-
-example:
-
-- `example/ntgcalls.rb`
-
-### Environment
-
-- `TD_USER_SESSION` (required; generated via `example/generate_user_session.rb`)
-- `NTGCALLS_PATH` (optional; absolute/custom path to shared library)
-- `VC_CHAT` (required; numeric chat id or `@username`)
-- `VC_AUDIO` (required; local file path or URL)
-- `VC_INVITE_HASH` (optional; invite hash for restricted voice chats)
-
-### Run Demo
-
-```bash
-ruby example/ntgcalls.rb
-```
-
-### Direct Ruby Usage
-
-```ruby
-bot = GrubY::NTgCalls::MusicBot.new(
-  td_user_session: ENV.fetch("TD_USER_SESSION"),
-  tdjson_path: ENV["TDJSON_PATH"],
-  ntgcalls_path: ENV["NTGCALLS_PATH"]
-)
-
-bot.start
-bot.join_and_play(chat: "@GrubYChat", audio: "song.mp3")
-bot.pause
-bot.resume
-bot.mute
-bot.unmute
-bot.stop_call
-bot.stop
-```
-
-Note:
-- `ntgcalls` is a media engine.
-- This demo performs signaling/auth through TDLib raw calls plus NTgCalls media engine.
-
 ## Telegram User Session String (Ruby)
 
 Generate a reusable TDLib user session string:
@@ -159,7 +114,6 @@ Enums:
 ```ruby
 GrubY::Enums::ParseMode::MARKDOWN_V2
 GrubY::Enums::ChatAction::TYPING
-GrubY::Enums::GroupCallUpdateType::UPDATE_GROUP_CALL
 ```
 
 InlineKeyboard and WebApp:
@@ -286,16 +240,6 @@ f = GrubY::Filters.command(%w[start help]) & GrubY::Filters.private
 client.on_message(f) { |app, msg| msg.reply_text("ok") }
 ```
 
-Raw Group-Call Objects:
-
-```ruby
-igc = GrubY::RawTypes.input_group_call(id: 1, access_hash: 2)
-peer = GrubY::RawTypes.input_peer_self
-json = GrubY::RawTypes.to_data_json({ ufrag: "x" })
-join = GrubY::RawTypes.join_group_call(call: igc, params: json, join_as: peer)
-leave = GrubY::RawTypes.leave_group_call(call: igc, source: 123)
-```
-
 ## Steps to Setup TDJSON:
 
 1. Push a tag (example: `v0.2.1`) or manually run the `Release TDJSON` workflow.
@@ -314,7 +258,6 @@ Note: `GrubY::TDLib::Native` now also auto-detects from `vendor/tdlib/...` paths
 ## Examples:
 
 - `example/bot.rb`
-- `example/ntgcalls.rb`
 - `example/generate_user_session.rb`
 - `example/tdlib.rb`
 - `example/userbot.rb` (phone/QR login)
