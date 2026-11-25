@@ -12,7 +12,7 @@ module GrubY
       ChatType: %w[private bot group supergroup channel direct forum],
       ClientPlatform: %w[ruby linux windows macos android ios web],
       FolderColor: %w[blue cyan green orange pink purple red yellow],
-      MessageEntityType: %w[mention hashtag cashtag bot_command url email phone_number bold italic underline strikethrough spoiler code pre text_link text_mention custom_emoji],
+      MessageEntityType: %w[mention hashtag cashtag bot_command url email phone_number bold italic underline strikethrough spoiler code pre text_link text_mention custom_emoji bank_card_number ton_address],
       MessageMediaType: %w[text photo video animation audio voice video_note document sticker contact location venue poll dice game story paid_media],
       MessageOriginType: %w[user hidden_user chat channel],
       MessageServiceType: %w[new_chat_members left_chat_member new_chat_title new_chat_photo delete_chat_photo group_chat_created supergroup_chat_created channel_chat_created migrate_to_chat_id migrate_from_chat_id pinned_message game_score video_chat_started video_chat_ended video_chat_members_invited successful_payment],
