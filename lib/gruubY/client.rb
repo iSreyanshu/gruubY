@@ -10,12 +10,13 @@ module GrubY
   class Client
     attr_reader :bot, :api, :session, :group_manager
 
-    def initialize(token, session: Session.new, polling_timeout: 30)
+    def initialize(token, session: Session.new, polling_timeout: 30, allowed_updates: nil)
       @bot = Bot.new(token, session: session)
       @api = @bot.api
       @session = session
       @group_manager = GroupManager.new(@api, session: @session)
       @polling_timeout = polling_timeout
+      @allowed_updates = allowed_updates
       @polling_thread = nil
       @running = false
     end
@@ -81,6 +82,8 @@ module GrubY
     {
       on_message: GrubY::Handlers::MessageHandler,
       on_edited_message: GrubY::Handlers::EditedMessageHandler,
+      on_channel_post: GrubY::Handlers::ChannelPostHandler,
+      on_edited_channel_post: GrubY::Handlers::EditedChannelPostHandler,
       on_business_message: GrubY::Handlers::BusinessMessageHandler,
       on_edited_business_message: GrubY::Handlers::EditedBusinessMessageHandler,
       on_deleted_messages: GrubY::Handlers::DeletedMessagesHandler,
@@ -96,6 +99,8 @@ module GrubY
       on_chosen_inline_result: GrubY::Handlers::ChosenInlineResultHandler,
       on_inline_query: GrubY::Handlers::InlineQueryHandler,
       on_poll: GrubY::Handlers::PollHandler,
+      on_poll_answer: GrubY::Handlers::PollAnswerHandler,
+      on_chat_member: GrubY::Handlers::ChatMemberHandler,
       on_pre_checkout_query: GrubY::Handlers::PreCheckoutQueryHandler,
       on_purchased_paid_media: GrubY::Handlers::PurchasedPaidMediaHandler,
       on_shipping_query: GrubY::Handlers::ShippingQueryHandler,
@@ -105,6 +110,11 @@ module GrubY
       on_connect: GrubY::Handlers::ConnectHandler,
       on_disconnect: GrubY::Handlers::DisconnectHandler,
       on_managed_bot: GrubY::Handlers::ManagedBotUpdatedHandler,
+      on_removed_chat_boost: GrubY::Handlers::RemovedChatBoostHandler,
+      on_widget_query: GrubY::Handlers::WidgetQueryHandler,
+      on_shared_widget_query: GrubY::Handlers::SharedWidgetQueryHandler,
+      on_bot_subscription_updated: GrubY::Handlers::BotSubscriptionUpdatedHandler,
+      on_message_generation_stopped: GrubY::Handlers::MessageGenerationStoppedHandler,
       on_raw_update: GrubY::Handlers::RawUpdateHandler
     }.each do |decorator_name, klass|
       define_method(decorator_name) do |filters = nil, group: 0, &block|
@@ -272,7 +282,9 @@ module GrubY
       @polling_thread = Thread.new do
         while @running
           begin
-            updates = @api.get_updates(offset, timeout: @polling_timeout) || []
+            opts = { timeout: @polling_timeout }
+            opts[:allowed_updates] = @allowed_updates unless @allowed_updates.nil?
+            updates = @api.get_updates(offset, **opts) || []
             updates.each do |update|
               offset = update["update_id"].to_i + 1
               process_update(update)
