@@ -2,10 +2,12 @@ require "json"
 require "net/http"
 require "uri"
 require_relative "retry"
+require "stringio"
 
 module GrubY
   class API
     class Error < StandardError; end
+    BOT_API_VERSION = "10.5".freeze
     METHOD_ALIASES = {
       "set_bot_commands" => "setMyCommands",
       "get_bot_commands" => "getMyCommands",
@@ -41,6 +43,19 @@ module GrubY
       "approve_chat_join_request" => "approveChatJoinRequest",
       "decline_chat_join_request" => "declineChatJoinRequest",
       "send_message_draft" => "sendMessageDraft",
+      "set_my_settings" => "setMySettings",
+      "send_rich_message" => "sendRichMessage",
+      "send_rich_message_draft" => "sendRichMessageDraft",
+      "send_live_photo" => "sendLivePhoto",
+      "send_widget" => "sendWidget",
+      "send_shared_widget" => "sendSharedWidget",
+      "answer_widget_query" => "answerWidgetQuery",
+      "get_unique_gift" => "getUniqueGift",
+      "delete_ephemeral_message" => "deleteEphemeralMessage",
+      "edit_ephemeral_message_text" => "editEphemeralMessageText",
+      "edit_ephemeral_message_media" => "editEphemeralMessageMedia",
+      "edit_ephemeral_message_caption" => "editEphemeralMessageCaption",
+      "edit_ephemeral_message_reply_markup" => "editEphemeralMessageReplyMarkup",
       "send_paid_reaction" => "sendPaidReaction",
       "get_user_chat_boosts" => "getUserChatBoosts",
       "get_business_connection" => "getBusinessConnection",
@@ -60,7 +75,19 @@ module GrubY
 
     def raw(method, params = {})
       uri = @base + method.to_s
-      response = Retry.call { Net::HTTP.post_form(uri, serialize_params(params)) }
+      response = Retry.call do
+        clean_params = params.each_with_object({}) do |(key, value), out|
+          next if value.nil?
+
+          out[key.to_s] = value
+        end
+
+        if clean_params.any? { |key, value| multipart_file_field?(key) && upload_value?(value) }
+          post_multipart(uri, clean_params)
+        else
+          post_json(uri, clean_params)
+        end
+      end
       parse_response(response)
     end
 
@@ -333,6 +360,79 @@ module GrubY
 
     private
 
+    def post_json(uri, params)
+      request = Net::HTTP::Post.new(uri)
+      request["Content-Type"] = "application/json"
+      request.body = JSON.generate(params)
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
+        http.request(request)
+      end
+    end
+
+    def post_multipart(uri, params)
+      boundary = "----gruby#{object_id}#{Process.pid}"
+      body = StringIO.new
+
+      params.each do |key, value|
+        if multipart_file_field?(key) && upload_value?(value)
+          append_multipart_file(body, boundary, key, value)
+        elsif value.is_a?(Hash) || value.is_a?(Array)
+          append_multipart_field(body, boundary, key, JSON.generate(value))
+        else
+          append_multipart_field(body, boundary, key, value.to_s)
+        end
+      end
+      body.write("--#{boundary}--\r\n")
+
+      request = Net::HTTP::Post.new(uri)
+      request["Content-Type"] = "multipart/form-data; boundary=#{boundary}"
+      request.body = body.string
+      Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == "https") do |http|
+        http.request(request)
+      end
+    end
+
+    def append_multipart_field(body, boundary, name, value)
+      body.write("--#{boundary}\r\n")
+      body.write("Content-Disposition: form-data; name=\"#{name}\"\r\n\r\n")
+      body.write(value)
+      body.write("\r\n")
+    end
+
+    def append_multipart_file(body, boundary, name, value)
+      io = value.respond_to?(:read) ? value : File.open(value, "rb")
+      filename = if value.respond_to?(:path)
+                   File.basename(value.path)
+                 elsif value.is_a?(String)
+                   File.basename(value)
+                 else
+                   "upload"
+                 end
+      body.write("--#{boundary}\r\n")
+      body.write("Content-Disposition: form-data; name=\"#{name}\"; filename=\"#{filename}\"\r\n")
+      body.write("Content-Type: application/octet-stream\r\n\r\n")
+      body.write(io.read)
+      body.write("\r\n")
+      io.close if value.is_a?(String)
+    end
+
+    def upload_value?(value)
+      value.is_a?(File) ||
+        value.is_a?(StringIO) ||
+        value.respond_to?(:read) ||
+        (value.is_a?(String) && File.file?(value))
+    rescue StandardError
+      false
+    end
+
+    def multipart_file_field?(name)
+      %w[
+        photo video animation audio voice video_note document sticker
+        thumb thumbnail certificate png_sticker tgs_sticker webp_sticker
+        profile_photo file
+      ].include?(name.to_s)
+    end
+
     def serialize_params(params)
       params.each_with_object({}) do |(key, value), out|
         next if value.nil?
@@ -351,7 +451,7 @@ module GrubY
     end
 
     def parse_response(response)
-      payload = JSON.parse(response.body)
+      payload = JSON.parse(response.body.to_s)
       return payload if payload["ok"]
 
       message = payload["description"] || "Unknown Telegram API error"
