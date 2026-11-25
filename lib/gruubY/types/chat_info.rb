@@ -18,7 +18,8 @@ module GrubY
       :has_hidden_members, :has_protected_content, :has_visible_history,
       :sticker_set_name, :can_set_sticker_set,
       :custom_emoji_sticker_set_name, :linked_chat_id, :location, :rating,
-      :first_profile_audio, :unique_gift_colors, :paid_message_star_count
+      :first_profile_audio, :unique_gift_colors, :paid_message_star_count,
+      :community, :ton_wallet_card, :share_theme
 
     def initialize(data)
       super(data)
