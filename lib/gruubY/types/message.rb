@@ -36,7 +36,9 @@ module GrubY
       :suggested_post_declined, :suggested_post_paid,
       :suggested_post_refunded, :video_chat_scheduled, :video_chat_started,
       :video_chat_ended, :video_chat_participants_invited, :web_app_data,
-      :reply_markup
+      :reply_markup, :widget, :receiver_user, :ephemeral_message_id,
+      :rich_texts, :stopped_message_generation, :community_chat_joined,
+      :paid_messages_waived, :ton_wallet_transfer
 
     def initialize(data, api: nil, client: nil)
       super(data, api: api, client: client)
