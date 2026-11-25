@@ -6,14 +6,15 @@ module GrubY
     fields :update_id, :message, :edited_message, :channel_post,
       :edited_channel_post, :business_connection, :business_message,
       :edited_business_message, :deleted_business_messages,
-      :deleted_messages, :message_reaction, :message_reaction_count,
+      :deleted_messages, :guest_message, :message_reaction, :message_reaction_count,
       :inline_query, :chosen_inline_result, :callback_query,
       :shipping_query, :pre_checkout_query, :purchased_paid_media,
       :poll, :poll_answer, :chat_member, :my_chat_member,
       :chat_join_request, :chat_boost, :removed_chat_boost,
       :widget_query, :shared_widget_query, :bot_subscription_updated,
       :message_generation_stopped, :community_chat_joined,
-      :managed_bot_updated
+      :managed_bot_updated, :managed_bot, :subscription,
+      :stopped_message_generation
 
     def initialize(data, api: nil, client: nil)
       super(data, api: api, client: client)
@@ -23,6 +24,7 @@ module GrubY
       @edited_channel_post = Message.new(@edited_channel_post, api: api, client: client) if @edited_channel_post.is_a?(Hash)
       @business_message = Message.new(@business_message, api: api, client: client) if @business_message.is_a?(Hash)
       @edited_business_message = Message.new(@edited_business_message, api: api, client: client) if @edited_business_message.is_a?(Hash)
+      @guest_message = Message.new(@guest_message, api: api, client: client) if @guest_message.is_a?(Hash)
       @callback_query = CallbackQuery.new(@callback_query, api: api, client: client) if @callback_query.is_a?(Hash)
       @inline_query = InlineQuery.new(@inline_query, api: api, client: client) if @inline_query.is_a?(Hash)
       @poll_answer = PollAnswer.new(@poll_answer, api: api, client: client) if @poll_answer.is_a?(Hash)
