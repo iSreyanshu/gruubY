@@ -63,6 +63,7 @@ module GrubY
         "edited_channel_post" => :edited_channel_post,
         "business_message" => :business_message,
         "edited_business_message" => :edited_business_message,
+        "guest_message" => :guest_message,
         "deleted_messages" => :deleted_messages,
         "deleted_business_messages" => :deleted_business_messages,
         "message_reaction_count" => :message_reaction_count,
@@ -78,16 +79,19 @@ module GrubY
         "poll" => :poll,
         "poll_answer" => :poll_answer,
         "chat_member" => :chat_member,
-        "my_chat_member" => :chat_member,
+        "my_chat_member" => :my_chat_member,
         "pre_checkout_query" => :pre_checkout_query,
         "purchased_paid_media" => :purchased_paid_media,
         "shipping_query" => :shipping_query,
         "user_status" => :user_status,
+        "managed_bot" => :managed_bot,
         "managed_bot_updated" => :managed_bot,
         "removed_chat_boost" => :removed_chat_boost,
         "widget_query" => :widget_query,
         "shared_widget_query" => :shared_widget_query,
+        "subscription" => :bot_subscription_updated,
         "bot_subscription_updated" => :bot_subscription_updated,
+        "stopped_message_generation" => :message_generation_stopped,
         "message_generation_stopped" => :message_generation_stopped
       }
 
