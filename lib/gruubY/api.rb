@@ -8,6 +8,65 @@ module GrubY
   class API
     class Error < StandardError; end
     BOT_API_VERSION = "10.5".freeze
+    OFFICIAL_METHODS = %w[
+      getFile getUpdates setWebhook deleteWebhook getWebhookInfo
+      sendAudio sendDocument sendVoice getMe logOut close sendMessage
+      forwardMessage forwardMessages copyMessage copyMessages sendPhoto
+      sendLivePhoto sendVideo sendAnimation sendVideoNote sendWidget
+      sendRichMessage sendRichMessageDraft
+      sendSharedWidget sendPaidMedia sendMediaGroup sendLocation sendVenue
+      sendContact sendPoll sendChecklist sendDice sendMessageDraft
+      sendChatAction setMessageReaction getUserProfilePhotos getUserProfileAudios
+      setUserEmojiStatus banChatMember unbanChatMember restrictChatMember
+      promoteChatMember setChatAdministratorCustomTitle setChatMemberTag
+      banChatSenderChat unbanChatSenderChat setChatPermissions
+      exportChatInviteLink createChatInviteLink editChatInviteLink
+      createChatSubscriptionInviteLink editChatSubscriptionInviteLink
+      revokeChatInviteLink approveChatJoinRequest declineChatJoinRequest
+      answerChatJoinRequestQuery sendChatJoinRequestWebApp setChatPhoto
+      deleteChatPhoto setChatTitle setChatDescription pinChatMessage
+      unpinChatMessage unpinAllChatMessages leaveChat getChat
+      getChatAdministrators getChatMemberCount getChatMember
+      getChatShareThemeBackdrops getUserPersonalChatMessages setChatStickerSet
+      deleteChatStickerSet getForumTopicIconStickers createForumTopic
+      editForumTopic closeForumTopic reopenForumTopic deleteForumTopic
+      unpinAllForumTopicMessages editGeneralForumTopic closeGeneralForumTopic
+      reopenGeneralForumTopic hideGeneralForumTopic unhideGeneralForumTopic
+      unpinAllGeneralForumTopicMessages answerCallbackQuery answerWidgetQuery
+      answerGuestQuery getUserChatBoosts getBusinessConnection
+      getManagedBotToken replaceManagedBotToken getManagedBotAccessSettings
+      setManagedBotAccessSettings setMySettings setMyCommands deleteMyCommands
+      getMyCommands setMyName getMyName setMyDescription getMyDescription
+      setMyShortDescription getMyShortDescription setMyProfilePhoto
+      removeMyProfilePhoto setChatMenuButton getChatMenuButton
+      setMyDefaultAdministratorRights getMyDefaultAdministratorRights
+      getAvailableGifts sendGift giftPremiumSubscription verifyUser verifyChat
+      removeUserVerification removeChatVerification readBusinessMessage
+      deleteBusinessMessages setBusinessAccountName setBusinessAccountUsername
+      setBusinessAccountBio setBusinessAccountProfilePhoto
+      removeBusinessAccountProfilePhoto setBusinessAccountGiftSettings
+      getBusinessAccountStarBalance transferBusinessAccountStars
+      getBusinessAccountGifts getUserGifts getChatGifts getUniqueGift
+      convertGiftToStars upgradeGift transferGift deleteBusinessAccountGift
+      postStory repostStory editStory deleteStory answerWebAppQuery
+      savePreparedInlineMessage savePreparedKeyboardButton editMessageText
+      editMessageCaption editMessageMedia editMessageLiveLocation
+      stopMessageLiveLocation editMessageChecklist editMessageWidgetData
+      editSharedWidgetData editMessageReplyMarkup stopPoll
+      editEphemeralMessageText editEphemeralMessageMedia
+      editEphemeralMessageCaption editEphemeralMessageReplyMarkup
+      approveSuggestedPost declineSuggestedPost deleteMessage deleteMessages
+      deleteEphemeralMessage deleteMessageReaction deleteAllMessageReactions
+      sendSticker getStickerSet getCustomEmojiStickers uploadStickerFile
+      createNewStickerSet addStickerToSet setStickerPositionInSet
+      deleteStickerFromSet replaceStickerInSet setStickerEmojiList
+      setStickerKeywords setStickerMaskPosition setStickerSetTitle
+      setStickerSetThumbnail setCustomEmojiStickerSetThumbnail deleteStickerSet
+      answerInlineQuery sendInvoice createInvoiceLink answerShippingQuery
+      answerPreCheckoutQuery getMyStarBalance getStarTransactions
+      refundStarPayment editUserStarSubscription setPassportDataErrors
+      sendGame setGameScore getGameHighScores
+    ].freeze
     METHOD_ALIASES = {
       "set_bot_commands" => "setMyCommands",
       "get_bot_commands" => "getMyCommands",
@@ -316,6 +375,24 @@ module GrubY
         chat_id: chat_id,
         message_ids: message_ids
       }.merge(opts))
+    end
+
+    OFFICIAL_METHODS.each do |api_method|
+      snake_name = api_method
+        .gsub(/([A-Z]+)([A-Z][a-z])/, '\1_\2')
+        .gsub(/([a-z\d])([A-Z])/, '\1_\2')
+        .downcase
+
+      define_method(snake_name) do |*args, **kwargs|
+        params = {}
+        if args.length == 1 && args.first.is_a?(Hash)
+          params.merge!(args.first)
+        elsif !args.empty?
+          raise ArgumentError, "#{snake_name} accepts a parameter hash or keyword arguments"
+        end
+        params.merge!(kwargs) unless kwargs.empty?
+        request(api_method, params)
+      end
     end
 
     def method_missing(name, *args, **kwargs, &block)
