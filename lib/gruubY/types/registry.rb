@@ -49,6 +49,21 @@ module GrubY
       InputPrivacyRuleAllowPremium InputPrivacyRuleAllowUsers InputPrivacyRuleDisallowAll InputPrivacyRuleDisallowBots
       InputPrivacyRuleDisallowChats InputPrivacyRuleDisallowContacts InputPrivacyRuleDisallowUsers InputTextMessageContent
       InputVenueMessageContent
+      BotFullInfo Widget SharedWidget WidgetQuery SharedWidgetQuery
+      WidgetQueryType WidgetQueryTypeData WidgetQueryTypeSignData WidgetQueryTypeSentTransaction WidgetWallet
+      EphemeralMessageParameters CommunityChatJoined Community
+      ChatShareTheme ChatShareThemeEmoji ChatShareThemeUniqueGift
+      ChatShareThemeBackdrop ChatShareThemeBackdrops
+      RichText TonAddress BankCardNumber PaidMessagesWaived TonWalletCard TonWalletCardSticker
+      TonNft TonNftAttribute TonWalletTransfer AreaPosition EmojiType EmojiTypeEmoji EmojiTypeCustomEmoji
+      RichMessage RichMessageButton RichTextButton RichBlockButtons RichBlockExpandableBlockQuotation
+      RichBlockDocument RichBlockTable InputRichMessageMedia InputMediaVoiceNote
+      InputRichBlockListItem InputRichBlockParagraph InputRichBlockSectionHeading InputRichBlockPreformatted
+      InputRichBlockFooter InputRichBlockDivider InputRichBlockMathematicalExpression InputRichBlockAnchor
+      InputRichBlockList InputRichBlockBlockQuotation InputRichBlockPullQuotation InputRichBlockCollage
+      InputRichBlockSlideshow InputRichBlockTable InputRichBlockDetails InputRichBlockMap
+      InputRichBlockAnimation InputRichBlockAudio InputRichBlockPhoto InputRichBlockVideo
+      InputRichBlockVoiceNote InputRichBlockThinking
     ].freeze
 
     module_function
