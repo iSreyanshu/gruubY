@@ -7,13 +7,15 @@ require_relative "extra"
 module GrubY
   class Message < BaseObject
     fields :message_id, :message_thread_id, :direct_messages_topic, :from,
-      :sender_chat, :sender_boost_count, :sender_business_bot, :sender_tag,
-      :date, :business_connection_id, :chat, :forward_origin, :is_topic_message,
+    :sender_chat, :sender_boost_count, :sender_business_bot, :sender_tag,
+    :guest_query_id, :guest_bot_caller_user, :guest_bot_caller_chat,
+    :date, :business_connection_id, :chat, :forward_origin, :is_topic_message,
       :is_automatic_forward, :reply_to_message, :external_reply, :quote,
       :reply_to_story, :reply_to_checklist_task_id, :reply_to_poll_option_id,
       :via_bot, :edit_date, :has_protected_content, :is_from_offline,
       :is_paid_post, :media_group_id, :author_signature, :paid_star_count,
       :text, :entities, :link_preview_options, :suggested_post_info, :effect_id,
+      :rich_message,
       :animation, :audio, :document, :paid_media, :photo, :sticker, :story,
       :video, :video_note, :voice, :caption, :caption_entities,
       :show_caption_above_media, :has_media_spoiler, :checklist, :contact, :dice,
@@ -37,7 +39,7 @@ module GrubY
       :suggested_post_refunded, :video_chat_scheduled, :video_chat_started,
       :video_chat_ended, :video_chat_participants_invited, :web_app_data,
       :reply_markup, :widget, :receiver_user, :ephemeral_message_id,
-      :rich_texts, :stopped_message_generation, :community_chat_joined,
+      :community_chat_added, :community_chat_joined, :community_chat_removed,
       :paid_messages_waived, :ton_wallet_transfer
 
     def initialize(data, api: nil, client: nil)
@@ -46,6 +48,8 @@ module GrubY
       @chat = Chat.new(@chat, api: api, client: client) if @chat.is_a?(Hash)
       @sender_chat = Chat.new(@sender_chat, api: api, client: client) if @sender_chat.is_a?(Hash)
       @sender_business_bot = User.new(@sender_business_bot, api: api, client: client) if @sender_business_bot.is_a?(Hash)
+      @guest_bot_caller_user = User.new(@guest_bot_caller_user, api: api, client: client) if @guest_bot_caller_user.is_a?(Hash)
+      @guest_bot_caller_chat = Chat.new(@guest_bot_caller_chat, api: api, client: client) if @guest_bot_caller_chat.is_a?(Hash)
       @via_bot = User.new(@via_bot, api: api, client: client) if @via_bot.is_a?(Hash)
       @reply_to_message = Message.new(@reply_to_message, api: api, client: client) if @reply_to_message.is_a?(Hash)
       @external_reply = ExternalReplyInfo.new(@external_reply) if @external_reply.is_a?(Hash)
