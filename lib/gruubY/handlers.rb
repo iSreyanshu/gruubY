@@ -33,6 +33,16 @@ module GrubY
       def extract(ctx) = ctx.edited_message
     end
 
+    class ChannelPostHandler < BaseHandler
+      def event = :channel_post
+      def extract(ctx) = ctx.channel_post
+    end
+
+    class EditedChannelPostHandler < BaseHandler
+      def event = :edited_channel_post
+      def extract(ctx) = ctx.edited_channel_post
+    end
+
     class DeletedMessagesHandler < BaseHandler
       def event = :deleted_messages
       def extract(ctx) = ctx.deleted_messages
@@ -101,6 +111,41 @@ module GrubY
     class PollHandler < BaseHandler
       def event = :poll
       def extract(ctx) = ctx.poll_update
+    end
+
+    class PollAnswerHandler < BaseHandler
+      def event = :poll_answer
+      def extract(ctx) = ctx.poll_answer
+    end
+
+    class ChatMemberHandler < BaseHandler
+      def event = :chat_member
+      def extract(ctx) = ctx.chat_member_updated
+    end
+
+    class RemovedChatBoostHandler < BaseHandler
+      def event = :removed_chat_boost
+      def extract(ctx) = ctx.removed_chat_boost
+    end
+
+    class WidgetQueryHandler < BaseHandler
+      def event = :widget_query
+      def extract(ctx) = ctx.widget_query
+    end
+
+    class SharedWidgetQueryHandler < BaseHandler
+      def event = :shared_widget_query
+      def extract(ctx) = ctx.shared_widget_query
+    end
+
+    class BotSubscriptionUpdatedHandler < BaseHandler
+      def event = :bot_subscription_updated
+      def extract(ctx) = ctx.bot_subscription_updated
+    end
+
+    class MessageGenerationStoppedHandler < BaseHandler
+      def event = :message_generation_stopped
+      def extract(ctx) = ctx.message_generation_stopped
     end
 
     class PreCheckoutQueryHandler < BaseHandler
