@@ -52,20 +52,22 @@ module GrubY
       BotFullInfo Sticker StickerSet MaskPosition InputSticker
       ChatBoostRemoved PollAnswer Update WebhookInfo BotSubscriptionUpdated MessageGenerationStopped
       Widget SharedWidget WidgetQuery SharedWidgetQuery
-      WidgetQueryType WidgetQueryTypeData WidgetQueryTypeSignData WidgetQueryTypeSentTransaction WidgetWallet
-      EphemeralMessageParameters CommunityChatJoined Community
+      WidgetQueryType WidgetQueryTypeData WidgetQueryTypeSignData WidgetQueryTypeSentTransaction WidgetQueryWallet
+      EphemeralMessageParameters CommunityChatAdded CommunityChatJoined CommunityChatRemoved Community
       ChatShareTheme ChatShareThemeEmoji ChatShareThemeUniqueGift
       ChatShareThemeBackdrop ChatShareThemeBackdrops
-      RichText TonAddress BankCardNumber PaidMessagesWaived TonWalletCard TonWalletCardSticker
+      RichText RichTextTonAddress TonAddress BankCardNumber PaidMessagesWaived TonWalletCard TonWalletCardSticker
       TonNft TonNftAttribute TonWalletTransfer AreaPosition EmojiType EmojiTypeEmoji EmojiTypeCustomEmoji
       RichMessage RichMessageButton RichTextButton RichBlockButtons RichBlockExpandableBlockQuotation
       RichBlockDocument RichBlockTable InputRichMessageMedia InputMediaVoiceNote
+      InputRichMessageContent InputWidgetMessageContent InputSharedWidgetMessageContent
       InputRichBlockListItem InputRichBlockParagraph InputRichBlockSectionHeading InputRichBlockPreformatted
       InputRichBlockFooter InputRichBlockDivider InputRichBlockMathematicalExpression InputRichBlockAnchor
       InputRichBlockList InputRichBlockBlockQuotation InputRichBlockPullQuotation InputRichBlockCollage
       InputRichBlockSlideshow InputRichBlockTable InputRichBlockDetails InputRichBlockMap
       InputRichBlockAnimation InputRichBlockAudio InputRichBlockPhoto InputRichBlockVideo
       InputRichBlockVoiceNote InputRichBlockThinking
+      InputRichBlockButtons InputRichBlockExpandableBlockQuotation InputRichBlockDocument
     ].freeze
 
     module_function
