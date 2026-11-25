@@ -36,7 +36,8 @@ module GrubY
   end
 
   class TextQuote < BaseObject
-    fields :text, :entities, :position, :is_manual
+    fields :text, :entities, :position, :is_manual, :rich_texts,
+      :quote_rich_texts
 
     def initialize(data)
       super(data)
@@ -48,7 +49,8 @@ module GrubY
     fields :origin, :chat, :message_id, :link_preview_options, :animation, :audio,
       :document, :paid_media, :photo, :sticker, :story, :video, :video_note,
       :voice, :has_media_spoiler, :checklist, :contact, :dice, :game,
-      :giveaway, :giveaway_winners, :invoice, :location, :poll, :venue
+      :giveaway, :giveaway_winners, :invoice, :location, :poll, :venue,
+      :widget
 
     def initialize(data)
       super(data)
