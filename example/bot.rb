@@ -70,7 +70,7 @@ end
 
 client.on(:message, GrubY::Filters.command("media")) do |ctx|
   client.send_chat_action(ctx.chat_id, "typing")
-  ctx.reply("Try these API methods from code: send_photo/send_audio/send_document/send_video/send_animation/send_voice/send_video_note/send_media_group/send_paid_media")
+  ctx.reply("Try these API methods from code: send_photo/send_document/send_video/send_animation/send_voice/send_video_note/send_media_group/send_paid_media")
 end
 
 client.on(:message, GrubY::Filters.command("whoami")) do |ctx|
