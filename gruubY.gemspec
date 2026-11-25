@@ -2,7 +2,7 @@ Gem::Specification.new do |s|
   s.name        = "gruubY"
   s.version     = "0.2.2"
   s.summary     = "A Ruby wrapper for Telegram BotAPI and TDLib"
-  s.description = "Telegram BotAPI and TDLib toolkit for Ruby, with direct NTgCalls native bindings."
+  s.description = "Telegram Bot API and TDLib toolkit for Ruby."
   s.authors     = ["Sreyanshu"]
   s.homepage    = "https://github.com/iSreyanshu/gruubY"
   s.license     = "MIT"
