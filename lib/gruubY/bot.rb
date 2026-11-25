@@ -59,6 +59,8 @@ module GrubY
       mapping = {
         "message" => :message,
         "edited_message" => :edited_message,
+        "channel_post" => :channel_post,
+        "edited_channel_post" => :edited_channel_post,
         "business_message" => :business_message,
         "edited_business_message" => :edited_business_message,
         "deleted_messages" => :deleted_messages,
@@ -74,11 +76,19 @@ module GrubY
         "chosen_inline_result" => :chosen_inline_result,
         "inline_query" => :inline_query,
         "poll" => :poll,
+        "poll_answer" => :poll_answer,
+        "chat_member" => :chat_member,
+        "my_chat_member" => :chat_member,
         "pre_checkout_query" => :pre_checkout_query,
         "purchased_paid_media" => :purchased_paid_media,
         "shipping_query" => :shipping_query,
         "user_status" => :user_status,
-        "managed_bot_updated" => :managed_bot
+        "managed_bot_updated" => :managed_bot,
+        "removed_chat_boost" => :removed_chat_boost,
+        "widget_query" => :widget_query,
+        "shared_widget_query" => :shared_widget_query,
+        "bot_subscription_updated" => :bot_subscription_updated,
+        "message_generation_stopped" => :message_generation_stopped
       }
 
       mapping.each do |key, event|
