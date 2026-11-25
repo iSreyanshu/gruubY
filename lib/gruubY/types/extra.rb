@@ -165,6 +165,42 @@ module GrubY
     fields :file_id, :file_unique_id, :duration, :mime_type, :file_size
   end
 
+  class Sticker < BaseObject
+    fields :file_id, :file_unique_id, :type, :width, :height, :is_animated,
+      :is_video, :thumbnail, :emoji, :set_name, :premium_animation,
+      :mask_position, :custom_emoji_id, :needs_repainting, :file_size
+
+    def initialize(data)
+      super(data)
+      @thumbnail = PhotoSize.new(@thumbnail) if @thumbnail.is_a?(Hash)
+      @mask_position = MaskPosition.new(@mask_position) if @mask_position.is_a?(Hash)
+    end
+  end
+
+  class StickerSet < BaseObject
+    fields :name, :title, :sticker_type, :stickers, :thumbnail,
+      :premium_animation, :custom_emoji_ids
+
+    def initialize(data)
+      super(data)
+      @stickers = Array(@stickers).map { |sticker| Sticker.new(sticker) }
+      @thumbnail = PhotoSize.new(@thumbnail) if @thumbnail.is_a?(Hash)
+    end
+  end
+
+  class MaskPosition < BaseObject
+    fields :point, :x_shift, :y_shift, :scale
+  end
+
+  class InputSticker < BaseObject
+    fields :sticker, :emoji_list, :mask_position, :keywords
+
+    def initialize(data)
+      super(data)
+      @mask_position = MaskPosition.new(@mask_position) if @mask_position.is_a?(Hash)
+    end
+  end
+
   class PaidMediaInfo < BaseObject
     fields :star_count, :paid_media
   end
