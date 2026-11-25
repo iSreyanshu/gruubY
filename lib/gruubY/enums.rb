@@ -16,7 +16,7 @@ module GrubY
       MessageMediaType: %w[text photo video animation audio voice video_note document sticker contact location venue poll dice game story paid_media],
       MessageOriginType: %w[user hidden_user chat channel],
       MessageServiceType: %w[new_chat_members left_chat_member new_chat_title new_chat_photo delete_chat_photo group_chat_created supergroup_chat_created channel_chat_created migrate_to_chat_id migrate_from_chat_id pinned_message game_score video_chat_started video_chat_ended video_chat_members_invited successful_payment],
-      MessagesFilter: %w[empty photo video document url gif voice music chat_photo phone_call round_video video_note voice_note photo_video mention unread mention_me pinned],
+      MessagesFilter: %w[empty photo video document url gif voice chat_photo phone_call round_video video_note voice_note photo_video mention unread mention_me pinned],
       NextCodeType: %w[sms call flash_call missed_call fragment app],
       PaidReactionPrivacy: %w[anonymous default sender],
       ParseMode: %w[markdown markdown_v2 html],
@@ -53,10 +53,5 @@ module GrubY
       const_set(enum_name, enum_module)
     end
 
-    module GroupCallUpdateType
-      UPDATE_GROUP_CALL = "updateGroupCall"
-      UPDATE_GROUP_CALL_PARTICIPANTS = "updateGroupCallParticipants"
-      UPDATE_GROUP_CALL_SIGNALING_DATA = "updateGroupCallSignalingData"
-    end
   end
 end
