@@ -34,6 +34,46 @@ module GrubY
       Message.new(data, api: @api) if data
     end
 
+    def channel_post
+      data = @update["channel_post"]
+      Message.new(data, api: @api) if data
+    end
+
+    def edited_channel_post
+      data = @update["edited_channel_post"]
+      Message.new(data, api: @api) if data
+    end
+
+    def poll_answer
+      data = @update["poll_answer"]
+      wrap_type("PollAnswer", data)
+    end
+
+    def removed_chat_boost
+      data = @update["removed_chat_boost"]
+      wrap_type("ChatBoostRemoved", data)
+    end
+
+    def widget_query
+      data = @update["widget_query"]
+      wrap_type("WidgetQuery", data)
+    end
+
+    def shared_widget_query
+      data = @update["shared_widget_query"]
+      wrap_type("SharedWidgetQuery", data)
+    end
+
+    def bot_subscription_updated
+      data = @update["bot_subscription_updated"]
+      wrap_type("BotSubscriptionUpdated", data)
+    end
+
+    def message_generation_stopped
+      data = @update["message_generation_stopped"]
+      wrap_type("MessageGenerationStopped", data)
+    end
+
     def deleted_messages
       list = @update["deleted_messages"]
       Array(list).map { |m| Message.new(m, api: @api) }
@@ -236,7 +276,11 @@ module GrubY
       klass = GrubY.const_get(type_name)
       return data unless klass <= GrubY::BaseObject
 
-      klass.new(data, api: @api)
+      begin
+        klass.new(data, api: @api)
+      rescue ArgumentError
+        klass.new(data)
+      end
     end
   end
 end
