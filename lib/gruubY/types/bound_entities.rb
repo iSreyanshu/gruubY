@@ -1,6 +1,48 @@
 require_relative "base_object"
+require_relative "extra"
 
 module GrubY
+  class Update < BaseObject
+    fields :update_id, :message, :edited_message, :channel_post,
+      :edited_channel_post, :business_connection, :business_message,
+      :edited_business_message, :deleted_business_messages,
+      :deleted_messages, :message_reaction, :message_reaction_count,
+      :inline_query, :chosen_inline_result, :callback_query,
+      :shipping_query, :pre_checkout_query, :purchased_paid_media,
+      :poll, :poll_answer, :chat_member, :my_chat_member,
+      :chat_join_request, :chat_boost, :removed_chat_boost,
+      :widget_query, :shared_widget_query, :bot_subscription_updated,
+      :message_generation_stopped, :community_chat_joined,
+      :managed_bot_updated
+
+    def initialize(data, api: nil, client: nil)
+      super(data, api: api, client: client)
+      @message = Message.new(@message, api: api, client: client) if @message.is_a?(Hash)
+      @edited_message = Message.new(@edited_message, api: api, client: client) if @edited_message.is_a?(Hash)
+      @channel_post = Message.new(@channel_post, api: api, client: client) if @channel_post.is_a?(Hash)
+      @edited_channel_post = Message.new(@edited_channel_post, api: api, client: client) if @edited_channel_post.is_a?(Hash)
+      @business_message = Message.new(@business_message, api: api, client: client) if @business_message.is_a?(Hash)
+      @edited_business_message = Message.new(@edited_business_message, api: api, client: client) if @edited_business_message.is_a?(Hash)
+      @callback_query = CallbackQuery.new(@callback_query, api: api, client: client) if @callback_query.is_a?(Hash)
+      @inline_query = InlineQuery.new(@inline_query, api: api, client: client) if @inline_query.is_a?(Hash)
+      @poll_answer = PollAnswer.new(@poll_answer, api: api, client: client) if @poll_answer.is_a?(Hash)
+      @widget_query = wrap_update_type("WidgetQuery", @widget_query, api, client)
+      @shared_widget_query = wrap_update_type("SharedWidgetQuery", @shared_widget_query, api, client)
+      @bot_subscription_updated = wrap_update_type("BotSubscriptionUpdated", @bot_subscription_updated, api, client)
+      @message_generation_stopped = wrap_update_type("MessageGenerationStopped", @message_generation_stopped, api, client)
+    end
+
+    private
+
+    def wrap_update_type(type_name, data, api, client)
+      return data unless data.is_a?(Hash)
+      return data unless GrubY.const_defined?(type_name)
+
+      klass = GrubY.const_get(type_name)
+      klass.new(data, api: api, client: client)
+    end
+  end
+
   class CallbackQuery < BaseObject
     fields :id, :from, :message, :inline_message_id, :chat_instance, :data, :game_short_name
 
