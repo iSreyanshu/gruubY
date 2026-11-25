@@ -58,6 +58,11 @@ module GrubY
       def extract(ctx) = ctx.edited_business_message
     end
 
+    class GuestMessageHandler < BaseHandler
+      def event = :guest_message
+      def extract(ctx) = ctx.guest_message
+    end
+
     class DeletedBusinessMessagesHandler < BaseHandler
       def event = :deleted_business_messages
       def extract(ctx) = ctx.deleted_business_messages
@@ -121,6 +126,11 @@ module GrubY
     class ChatMemberHandler < BaseHandler
       def event = :chat_member
       def extract(ctx) = ctx.chat_member_updated
+    end
+
+    class MyChatMemberHandler < BaseHandler
+      def event = :my_chat_member
+      def extract(ctx) = ctx.my_chat_member
     end
 
     class RemovedChatBoostHandler < BaseHandler
