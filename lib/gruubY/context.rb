@@ -34,6 +34,11 @@ module GrubY
       Message.new(data, api: @api) if data
     end
 
+    def guest_message
+      data = @update["guest_message"]
+      Message.new(data, api: @api) if data
+    end
+
     def channel_post
       data = @update["channel_post"]
       Message.new(data, api: @api) if data
@@ -65,13 +70,18 @@ module GrubY
     end
 
     def bot_subscription_updated
-      data = @update["bot_subscription_updated"]
+      data = @update["subscription"] || @update["bot_subscription_updated"]
       wrap_type("BotSubscriptionUpdated", data)
     end
 
     def message_generation_stopped
-      data = @update["message_generation_stopped"]
+      data = @update["stopped_message_generation"] || @update["message_generation_stopped"]
       wrap_type("MessageGenerationStopped", data)
+    end
+
+    def my_chat_member
+      data = @update["my_chat_member"]
+      wrap_type("ChatMemberUpdated", data)
     end
 
     def deleted_messages
@@ -147,7 +157,7 @@ module GrubY
     end
 
     def chat_member_updated
-      data = @update["chat_member_updated"] || @update["chat_member"]
+      data = @update["chat_member"] || @update["chat_member_updated"]
       wrap_type("ChatMemberUpdated", data)
     end
 
@@ -177,7 +187,7 @@ module GrubY
     end
 
     def managed_bot_updated
-      data = @update["managed_bot_updated"] || @update["managed_bot"]
+      data = @update["managed_bot"] || @update["managed_bot_updated"]
       wrap_type("ManagedBotUpdated", data)
     end
 
