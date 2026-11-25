@@ -4,10 +4,8 @@
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Gems](https://img.shields.io/gem/v/gruubY.svg)](https://rubygems.org/gems/gruubY)
 
-<a href="https://rubygems.org/downloads/gruubY-0.2.2.gem">
-  <img src="https://img.shields.io/badge/Download-gruubY--0.2.2.gem-red?style=for-the-badge&logo=ruby&logoColor=white" alt="Download Gem">
-</a>
-
 ---
 
 *Maintained by [Sreyanshu](https://github.com/iSreyanshu)*
+
+See the [full documentation](source/README.md) for Bot API usage, current API coverage, updates, message editing, sticker methods and examples.
