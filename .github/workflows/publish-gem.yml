@@ -1,13 +1,13 @@
 name: Publish Gem
 
 on:
-  workflow_dispatch:
-  push:
-    tags:
-      - "v*"
+  workflow_run:
+    workflows: ["Release TDJSON"]
+    types: [completed]
 
 jobs:
   publish:
+    if: github.event.workflow_run.conclusion == 'success' && startsWith(github.event.workflow_run.head_branch, 'v')
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -15,15 +15,61 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v7
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Setup Ruby
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: "3.2"
-          bundler-cache: true
+          bundler-cache: false
+
+      - name: Bundle TDJSON releases
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_TAG: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/tdjson" vendor/tdlib/{linux,macos,windows}
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'tdjson-linux-x64.zip' --dir "$RUNNER_TEMP/tdjson"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'tdjson-macos-x64.zip' --dir "$RUNNER_TEMP/tdjson"
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" \
+            --pattern 'tdjson-windows-x64.zip' --dir "$RUNNER_TEMP/tdjson"
+          unzip -o "$RUNNER_TEMP/tdjson/tdjson-linux-x64.zip" -d vendor/tdlib/linux
+          unzip -o "$RUNNER_TEMP/tdjson/tdjson-macos-x64.zip" -d vendor/tdlib/macos
+          unzip -o "$RUNNER_TEMP/tdjson/tdjson-windows-x64.zip" -d vendor/tdlib/windows
+          test -s vendor/tdlib/linux/libtdjson.so
+          test -s vendor/tdlib/macos/libtdjson.dylib
+          test -s vendor/tdlib/windows/tdjson.dll
+
+      - name: Verify gem version matches release tag
+        env:
+          RELEASE_TAG: ${{ github.event.workflow_run.head_branch }}
+        run: |
+          expected_version="${RELEASE_TAG#v}"
+          actual_version="$(ruby -e 'puts Gem::Specification.load("gruubY.gemspec").version')"
+          test "$actual_version" = "$expected_version" || {
+            echo "Tag version $expected_version does not match gemspec version $actual_version"
+            exit 1
+          }
 
       - name: Build gem
         run: gem build gruubY.gemspec
+
+      - name: Verify gem contains TDJSON binaries
+        run: |
+          ruby -rrubygems/package -e '
+            package = Gem::Package.new(Dir["gruubY-*.gem"].fetch(0))
+            expected = %w[
+              vendor/tdlib/linux/libtdjson.so
+              vendor/tdlib/macos/libtdjson.dylib
+              vendor/tdlib/windows/tdjson.dll
+            ]
+            missing = expected - package.contents
+            abort "Gem is missing bundled binaries: #{missing.join(", ")}" unless missing.empty?
+          '
 
       - name: Publish to RubyGems
         env:
