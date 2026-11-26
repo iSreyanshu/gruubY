@@ -8,4 +8,4 @@
 
 *Maintained by [Sreyanshu](https://github.com/iSreyanshu)*
 
-**See the [full documentation]([source/README.md](https://isreyanshu.github.io/gruubY)) for Bot API usage, current API coverage, updates, message editing, sticker methods and examples.**
+**See the [documentation](https://isreyanshu.github.io/gruubY) for Bot API usage, current API coverage, updates, message editing, sticker methods and examples.**
