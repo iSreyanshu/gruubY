@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "gruubY"
-  s.version     = "0.2.3"
+  s.version     = "0.2.4"
   s.summary     = "A Ruby wrapper for Telegram BotAPI and TDLib"
   s.description = "Telegram Bot API and TDLib toolkit for Ruby."
   s.authors     = ["Sreyanshu"]
