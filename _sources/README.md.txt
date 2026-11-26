@@ -435,18 +435,13 @@ client.on_message(f) { |app, msg| msg.reply_text("ok") }
 
 ## Steps to Setup TDJSON:
 
-1. Push a tag (example: `v0.2.1`) or manually run the `Release TDJSON` workflow.
-2. Download the zip for your OS from the GitHub Release assets:
-   - `tdjson-linux-x64.zip`
-   - `tdjson-macos-x64.zip`
-   - `tdjson-windows-x64.zip`
-3. Extract and copy them into the repo:
-   - `Linux: vendor/tdlib/linux/libtdjson.so`
-   - `macOS: vendor/tdlib/macos/libtdjson.dylib`
-   - `Windows: vendor/tdlib/windows/tdjson.dll`
-4. Optional: Set `TDJSON_PATH` if you want to use a custom path.
+Published `gruubY` gems bundle the TDJSON binaries for Linux x64, macOS x64,
+and Windows x64. Install the gem normally; no separate TDLib download or copy
+is needed. The native loader finds the bundled binary automatically.
 
-Note: `GrubY::TDLib::Native` now also auto-detects from `vendor/tdlib/...` paths.
+To use a custom TDJSON build, set `TDJSON_PATH` or pass `tdjson_path:` to the
+client. The `Release TDJSON` workflow publishes the platform binaries, and the
+gem publish workflow bundles those assets after the release succeeds.
 
 ## Examples:
 

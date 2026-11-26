@@ -486,25 +486,12 @@ gem<span class="w"> </span>install<span class="w"> </span>./gruubY-0.2.2.gem
 </section>
 <section id="steps-to-setup-tdjson">
 <h1>Steps to Setup TDJSON:<a class="headerlink" href="#steps-to-setup-tdjson" title="Link to this heading"></a></h1>
-<ol class="arabic simple">
-<li><p>Push a tag (example: <code class="docutils literal notranslate"><span class="pre">v0.2.1</span></code>) or manually run the <code class="docutils literal notranslate"><span class="pre">Release</span> <span class="pre">TDJSON</span></code> workflow.</p></li>
-<li><p>Download the zip for your OS from the GitHub Release assets:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">tdjson-linux-x64.zip</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tdjson-macos-x64.zip</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tdjson-windows-x64.zip</span></code></p></li>
-</ul>
-</li>
-<li><p>Extract and copy them into the repo:</p>
-<ul class="simple">
-<li><p><code class="docutils literal notranslate"><span class="pre">Linux:</span> <span class="pre">vendor/tdlib/linux/libtdjson.so</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">macOS:</span> <span class="pre">vendor/tdlib/macos/libtdjson.dylib</span></code></p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">Windows:</span> <span class="pre">vendor/tdlib/windows/tdjson.dll</span></code></p></li>
-</ul>
-</li>
-<li><p>Optional: Set <code class="docutils literal notranslate"><span class="pre">TDJSON_PATH</span></code> if you want to use a custom path.</p></li>
-</ol>
-<p>Note: <code class="docutils literal notranslate"><span class="pre">GrubY::TDLib::Native</span></code> now also auto-detects from <code class="docutils literal notranslate"><span class="pre">vendor/tdlib/...</span></code> paths.</p>
+<p>Published <code class="docutils literal notranslate"><span class="pre">gruubY</span></code> gems bundle the TDJSON binaries for Linux x64, macOS x64,
+and Windows x64. Install the gem normally; no separate TDLib download or copy
+is needed. The native loader finds the bundled binary automatically.</p>
+<p>To use a custom TDJSON build, set <code class="docutils literal notranslate"><span class="pre">TDJSON_PATH</span></code> or pass <code class="docutils literal notranslate"><span class="pre">tdjson_path:</span></code> to the
+client. The <code class="docutils literal notranslate"><span class="pre">Release</span> <span class="pre">TDJSON</span></code> workflow publishes the platform binaries, and the
+gem publish workflow bundles those assets after the release succeeds.</p>
 </section>
 <section id="examples">
 <h1>Examples:<a class="headerlink" href="#examples" title="Link to this heading"></a></h1>
