@@ -74,4 +74,17 @@ jobs:
       - name: Publish to RubyGems
         env:
           GEM_HOST_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
-        run: gem push *.gem
+        run: |
+          while [[ "$GEM_HOST_API_KEY" == *$'\n' || "$GEM_HOST_API_KEY" == *$'\r' ]]; do
+            GEM_HOST_API_KEY="${GEM_HOST_API_KEY%?}"
+          done
+          if [[ "$GEM_HOST_API_KEY" == *$'\n'* || "$GEM_HOST_API_KEY" == *$'\r'* ]]; then
+            echo "::error::RUBYGEMS_API_KEY must not contain embedded line breaks"
+            exit 1
+          fi
+          if [[ -z "$GEM_HOST_API_KEY" ]]; then
+            echo "::error::RUBYGEMS_API_KEY is empty"
+            exit 1
+          fi
+          export GEM_HOST_API_KEY
+          gem push *.gem
