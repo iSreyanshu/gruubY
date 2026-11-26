@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.authors     = ["Sreyanshu"]
   s.homepage    = "https://github.com/iSreyanshu/gruubY"
   s.license     = "MIT"
-  s.files       = Dir.glob("{lib,config,plugins,example}/**/*").select { |f| File.file?(f) } +
+  s.files       = Dir.glob("{lib,config,plugins,example,vendor}/**/*").select { |f| File.file?(f) } +
                   %w[README.md LICENSE Rakefile]
   s.require_paths = ["lib"]
   s.required_ruby_version = ">= 3.1"
