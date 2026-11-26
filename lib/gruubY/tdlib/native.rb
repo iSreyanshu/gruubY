@@ -38,8 +38,11 @@ module GrubY
         end
 
         def default_candidates
+          gem_root = File.expand_path("../../..", __dir__)
+
           if Gem.win_platform?
             [
+              File.join(gem_root, "vendor/tdlib/windows/tdjson.dll"),
               "tdjson.dll",
               "vendor/tdlib/windows/tdjson.dll",
               "vendor/tdlib/win/tdjson.dll",
@@ -49,6 +52,7 @@ module GrubY
             ]
           elsif RUBY_PLATFORM.include?("darwin")
             [
+              File.join(gem_root, "vendor/tdlib/macos/libtdjson.dylib"),
               "libtdjson.dylib",
               "vendor/tdlib/macos/libtdjson.dylib",
               "vendor/tdlib/darwin/libtdjson.dylib",
@@ -58,6 +62,7 @@ module GrubY
             ]
           else
             [
+              File.join(gem_root, "vendor/tdlib/linux/libtdjson.so"),
               "libtdjson.so",
               "vendor/tdlib/linux/libtdjson.so",
               "vendor/tdlib/libtdjson.so",
